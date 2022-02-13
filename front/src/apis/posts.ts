@@ -1,5 +1,11 @@
+import { useCallback } from "react";
 import useSWR from "swr";
 import { axios } from "./axios";
+
+type AddPostRequest = {
+  title: string,
+  body: string,
+};
 
 export const usePostList = () => {
   const { data, error } = useSWR(
@@ -14,4 +20,14 @@ export const usePostList = () => {
     data: error ? undefined : response?.data,
     error: error ? error : undefined,
   };
+};
+
+export const useAddPost = () => {
+  const addPostRequest = useCallback(async (param: AddPostRequest) => {
+    const { data } = await axios.post('/api/posts', param);
+
+    return { data };
+  }, []);
+
+  return { addPostRequest };
 };
