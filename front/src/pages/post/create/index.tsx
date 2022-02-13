@@ -10,7 +10,7 @@ import { storePostSchemas } from '@/utils/schemas';
 
 import { useAddPost } from '@/apis/posts';
 
-import { TextField, Button } from '@mui/material';
+import { Button } from '@mui/material';
 
 type Param = {
   title: string,
@@ -52,26 +52,23 @@ const Post: NextPage = () => {
     <>
       <h4>Post登録</h4>
       <form onSubmit={onSubmitFormHandler}>
-        <TextField
-          error={touched.title}
-          id="standard-basic"
-          label="title"
-          variant="standard"
-          helperText={touched.title ? errors.title : undefined}
+        <label htmlFor="title">title</label>
+        <input
+          id='title'
+          type='text'
           onChange={onChangeInputHandler}
           onBlur={onBlurInputHandler}
         />
-        <TextField
-          error={touched.body}
-          id="standard-basic"
-          label="body"
-          variant="standard"
-          helperText={touched.body ? errors.body : undefined}
+        {touched.title ? <div>{errors.title}</div> : undefined}
+        <label htmlFor="body">body</label>
+        <input
+          id='body'
+          type="text"
           onChange={onChangeInputHandler}
           onBlur={onBlurInputHandler}
         />
-
-        <Button variant="contained">作成</Button>
+        {touched.body ? <div>{errors.body}</div> : undefined}
+        <Button variant="contained" type='submit'>作成</Button>
       </form>
     </>
   );
