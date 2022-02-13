@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
 import { usePostList } from '@/apis/posts';
+import Link from 'next/link';
 
 type Post = {
   id?: number,
@@ -14,6 +15,9 @@ const Post: NextPage = () => {
 
   return (
     <>
+      <Link href='/'>
+        <a>Topページ</a>
+      </Link>
       {postList?.map((post: Post) => {
         return (
           <div key={post?.id}>
