@@ -18,6 +18,9 @@ const Post: NextPage = () => {
       <Link href='/'>
         <a>Topページ</a>
       </Link>
+      <Link href='/post/create'>
+        <a>Post作成ページ</a>
+      </Link>
       {postList?.map((post: Post) => {
         return (
           <div key={post?.id}>
