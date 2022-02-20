@@ -34,7 +34,6 @@ const Post: NextPage = () => {
     push('/post')
   ), [push]);
 
-  // TODO:
   const onClickCancelButtonHandler = useCallback<MouseEventHandler<HTMLButtonElement>>(() => {
     setIsEdit(false);
     push(`/post/${data?.id}`)
