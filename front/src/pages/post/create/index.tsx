@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import { StorePostForm } from '@/components/forms/posts/store';
 
-const Post: NextPage = () => {
+const Posts: NextPage = () => {
   return (
     <>
       <h4>Post登録</h4>
@@ -15,4 +15,4 @@ const Post: NextPage = () => {
   );
 };
 
-export default Post;
+export default Posts;

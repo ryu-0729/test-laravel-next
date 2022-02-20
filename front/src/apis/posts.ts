@@ -31,3 +31,17 @@ export const useAddPost = () => {
 
   return { addPostRequest };
 };
+
+export const useGetPost = (id: number) => {
+  const { data, error } = useSWR(id ? [`/api/posts/${id}`] : null,
+    (url) => axios.get(url)
+      .then((res) => res)
+  );
+
+  const response = data?.data;
+
+  return {
+    data: error ? undefined : response,
+    error: error ? error : undefined,
+  };
+};
