@@ -4,12 +4,13 @@ import {
   FocusEvent,
   FormEvent,
   useCallback,
+  useMemo,
 } from 'react';
 import { useRouter } from 'next/router';
 import { FormikConfig, useFormik } from 'formik';
 import { storePostSchemas } from '@/utils/schemas';
 
-import { useAddPost } from '@/apis/posts';
+import { useAddPost, useEditPost } from '@/apis/posts';
 
 import { Button } from '@mui/material';
 
@@ -29,20 +30,27 @@ export const StorePostForm: VFC<Props> = ({
 }) => {
   const { push } = useRouter();
   const { addPostRequest } = useAddPost();
+  const { editPostRequest } = useEditPost();
+
+  const buttonLabel = useMemo(() => (
+    isEdit ? '更新' : '作成'
+  ), [isEdit]);
 
   const onSubmitHandler = useCallback<FormikConfig<Param>['onSubmit']>(async (values) => {
     const { title, body } = values;
-    const data = await addPostRequest({ title, body });
+    const data = !isEdit
+      ? await addPostRequest({ title, body })
+      : await editPostRequest({ id: post?.id, title, body });
 
     if (data && !('error' in data)) push('/post');
-  }, [addPostRequest, push]);
+  }, [isEdit, post, addPostRequest, editPostRequest, push]);
 
   const {
     values, errors, touched, handleSubmit, handleChange, handleBlur,
   } = useFormik<Param>({
     initialValues: {
-      title: '',
-      body: '',
+      title: post?.title ?? '',
+      body: post?.body ?? '',
     },
     validationSchema: storePostSchemas().pick(['title', 'body']),
     onSubmit: onSubmitHandler,
@@ -84,7 +92,12 @@ export const StorePostForm: VFC<Props> = ({
         />
         {touched.body ? <div>{errors.body}</div> : undefined}
       </div>
-      <Button variant="contained" type='submit'>作成</Button>
+      <Button
+        variant="contained"
+        type='submit'
+      >
+        {buttonLabel}
+      </Button>
     </form>
   );
 }
