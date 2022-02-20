@@ -24,7 +24,11 @@ const Post: NextPage = () => {
       {postList?.map((post: Post) => {
         return (
           <div key={post?.id}>
-            <li>{post?.title}</li>
+            <li>
+              <Link href={`/post/${post?.id}`}>
+                <a>{post?.title}</a>
+              </Link>
+            </li>
             <li>{post?.body}</li>
             <li>{post?.created_at}</li>
           </div>
