@@ -34,11 +34,17 @@ const Post: NextPage = () => {
     push('/post')
   ), [push]);
 
+  // TODO:
+  const onClickCancelButtonHandler = useCallback<MouseEventHandler<HTMLButtonElement>>(() => {
+    setIsEdit(false);
+    push(`/post/${data?.id}`)
+  }, [push, data]);
+
   return (
     <>
+      <h2>{pageTitle}</h2>
       {!isEdit ?
         <div>
-          <h2>{pageTitle}</h2>
           <p>タイトル：{data?.title}</p>
           <p>投稿内容：{data?.body}</p>
           <p>作成日：{data?.created_at}</p>
@@ -49,16 +55,25 @@ const Post: NextPage = () => {
           >
             編集
           </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={onClickBackButtonHandler}
+          >
+            一覧に戻る
+          </Button>
         </div> :
-        <StorePostForm isEdit={isEdit} post={data} />
+        <div>
+          <StorePostForm isEdit={isEdit} post={data} />
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={onClickCancelButtonHandler}
+          >
+            キャンセル
+          </Button>
+        </div>
       }
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={onClickBackButtonHandler}
-      >
-        一覧に戻る
-      </Button>
     </>
   );
 };
