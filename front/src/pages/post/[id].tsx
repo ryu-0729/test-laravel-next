@@ -7,6 +7,7 @@ import {
 } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 import { useGetPost } from '@/apis/posts';
 import { useGetPokemon } from '@/apis/pokemon';
@@ -15,12 +16,22 @@ import { StorePostForm } from '@/components/forms/posts/store';
 
 import { Button } from '@mui/material';
 
+type PokemonState = {
+  name: string,
+  image: string,
+};
+
+const initialPokemon: PokemonState = {
+  name: '',
+  image: '',
+};
+
 const Post: NextPage = () => {
   const { query, push } = useRouter();
   const { getPokemonRequest } = useGetPokemon();
 
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [pokemonName, setPokemonName] = useState<string>('');
+  const [pokemon, setPokemon] = useState<PokemonState>(initialPokemon);
 
   const postId = getQueryValue(query, 'id', '');
   const { data, error } = useGetPost(postId);
@@ -31,7 +42,7 @@ const Post: NextPage = () => {
     const getPokemonName = async () => {
       const randomNumber = Math.floor(Math.random() * 400);
       const pokemon = await getPokemonRequest(randomNumber + 1);
-      setPokemonName(pokemon);
+      setPokemon({ name: pokemon.name, image: pokemon.sprites.front_default ?? '' });
     };
     getPokemonName();
   }, [error, push, getPokemonRequest]);
@@ -57,7 +68,18 @@ const Post: NextPage = () => {
           <p>タイトル：{data?.title}</p>
           <p>投稿内容：{data?.body}</p>
           <p>作成日：{data?.created_at}</p>
-          <p>ランダムポケモン：{pokemonName ?? ''}</p>
+          <p>ランダムポケモン：{pokemon.name}</p>
+          {pokemon.image &&
+            <div>
+              <Image
+                alt='image'
+                src={pokemon.image}
+                width={300}
+                height={300}
+                objectFit='contain'
+              />
+            </div>
+          }
           <Button
             variant="contained"
             disableElevation

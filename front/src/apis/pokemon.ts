@@ -4,9 +4,10 @@ import { useCallback } from 'react';
 export const useGetPokemon = () => {
   const getPokemonRequest = useCallback(async (id: number) => {
     const api = new PokemonClient();
-    const { name } = await api.getPokemonById(id);
+    const data = await api.getPokemonById(id);
+    console.log(data);
 
-    return name;
+    return data;
   }, []);
 
   return { getPokemonRequest };
