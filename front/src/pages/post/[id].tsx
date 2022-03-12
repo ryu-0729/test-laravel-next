@@ -9,6 +9,7 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 
 import { useGetPost } from '@/apis/posts';
+import { useGetPokemon } from '@/apis/pokemon';
 import { getQueryValue } from '@/utils/query';
 import { StorePostForm } from '@/components/forms/posts/store';
 
@@ -16,15 +17,24 @@ import { Button } from '@mui/material';
 
 const Post: NextPage = () => {
   const { query, push } = useRouter();
+  const { getPokemonRequest } = useGetPokemon();
 
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [pokemonName, setPokemonName] = useState<string>('');
 
   const postId = getQueryValue(query, 'id', '');
   const { data, error } = useGetPost(postId);
 
   useEffect(() => {
     if (error) push('/post');
-  }, [error, push]);
+
+    const getPokemonName = async () => {
+      const randomNumber = Math.floor(Math.random() * 400);
+      const pokemon = await getPokemonRequest(randomNumber + 1);
+      setPokemonName(pokemon);
+    };
+    getPokemonName();
+  }, [error, push, getPokemonRequest]);
 
   const pageTitle = useMemo(() => (
     isEdit ? '編集' : '詳細'
@@ -47,6 +57,7 @@ const Post: NextPage = () => {
           <p>タイトル：{data?.title}</p>
           <p>投稿内容：{data?.body}</p>
           <p>作成日：{data?.created_at}</p>
+          <p>ランダムポケモン：{pokemonName ?? ''}</p>
           <Button
             variant="contained"
             disableElevation
