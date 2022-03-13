@@ -54,6 +54,9 @@ const Home: NextPage = () => {
           <Link href='/post'>
             <a className={styles.card}>Post一覧</a>
           </Link>
+          <Link href='/random-pokemon'>
+            <a className={styles.card}>ポケモン</a>
+          </Link>
         </div>
       </main>
 
