@@ -49,8 +49,8 @@ const RandomPokemon: NextPage<Props> = ({ pokemonData }) => {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const pokemonApis = new PokemonClient();
-  const pokemonId = Math.floor(Math.random() * 898);
-  const pokemonData = await pokemonApis.getPokemonById(pokemonId + 1);
+  const pokemonId = Math.floor(Math.random() * 898) + 1;
+  const pokemonData = await pokemonApis.getPokemonById(pokemonId);
 
   return {
     props: {
